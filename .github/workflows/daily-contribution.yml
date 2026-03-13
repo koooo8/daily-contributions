@@ -1,0 +1,25 @@
+name: Daily Contribution
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每天 UTC 0:00 (北京时间 8:00) 运行
+  workflow_dispatch: # 支持手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Update contribution file
+        run: |
+          echo "Daily contribution on $(date)" >> contribution.txt
+
+      - name: Commit and Push
+        run: |
+          git config --local user.email "koooo8@users.noreply.github.com"
+          git config --local user.name "koooo8"
+          git add contribution.txt
+          git commit -m "Daily contribution $(date)"
+          git push
